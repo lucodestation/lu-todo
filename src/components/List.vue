@@ -172,6 +172,7 @@ section {
 section.completed {
   background-color: #f0f0f0;
   color: #909399;
+  border-left-color: #909399;
 }
 .checkbox::before {
   content: "";
