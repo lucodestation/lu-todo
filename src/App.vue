@@ -51,6 +51,9 @@ body {
   --main-width: 800px;
   background-color: #ddd;
 }
+.el-dialog {
+  width: 600px;
+}
 @media screen and (max-width: 800px) {
   body {
     --main-width: auto;
