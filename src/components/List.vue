@@ -58,12 +58,13 @@
       width="600px"
       :close-on-click-modal="false"
     >
-      <el-form>
+      <el-form @submit.native.prevent>
         <el-form-item>
           <el-input
             v-model="content"
             autocomplete="off"
             placeholder="待办事项"
+            @keyup.enter.native="handleClose"
           ></el-input>
         </el-form-item>
       </el-form>
