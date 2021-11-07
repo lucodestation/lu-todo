@@ -6,8 +6,16 @@
       :class="{
         ongoing: !todo.done,
         completed: todo.done,
+        dragging: !todo.done && dragging,
       }"
+      :draggable="!todo.done"
+      @dragstart="handleDragstart($event, todo)"
+      @dragover="!todo.done && handleDragover($event)"
+      @drop="!todo.done && handleDrop($event)"
+      :data-todo="todo"
+      @dragend="handleDragend"
     >
+      <div class="mask" :data-todo="JSON.stringify(todo)"></div>
       <!-- 复选框 -->
       <div
         class="checkbox"
@@ -78,6 +86,7 @@ export default {
       dialogFormVisible: false,
       id: 0, // 要编辑的 id
       content: "", // 要编辑的内容
+      dragging: false,
     };
   },
   methods: {
@@ -109,6 +118,42 @@ export default {
       });
       this.dialogFormVisible = false;
     },
+    // 开始拖拽
+    handleDragstart(event, todo) {
+      // console.log("开始拖拽", event, todo);
+      this.dragging = true;
+      // event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", JSON.stringify(todo));
+    },
+    handleDragover(event) {
+      event.preventDefault();
+    },
+    // 释放拖拽
+    handleDrop(event) {
+      event.preventDefault();
+      // console.log("drop");
+      // console.log(
+      //   "拖拽数据",
+      //   JSON.parse(event.dataTransfer.getData("text/plain"))
+      // );
+      // console.log("释放目标", event.target);
+      // console.log("释放目标数据", JSON.parse(event.target.dataset.todo));
+      const currentTodoId = JSON.parse(
+        event.dataTransfer.getData("text/plain")
+      ).id;
+      const targetTodoId = JSON.parse(event.target.dataset.todo).id;
+      console.log(currentTodoId, targetTodoId);
+
+      // swapTodoPosition
+      this.$store.commit("swapTodoPosition", [currentTodoId, targetTodoId]);
+    },
+    // 拖拽结束
+    handleDragend() {
+      // 不能放到释放拖拽中，因为如果不是在可释放目标上释放，不会触发 drop 事件
+      this.dragging = false;
+    },
+    handleEmpty() {},
   },
 };
 </script>
@@ -164,5 +209,23 @@ section.completed {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+section.ongoing {
+  cursor: move;
+}
+section.dragging {
+  /* section { */
+  position: relative;
+}
+section.dragging .mask {
+  /* section .mask { */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 0 2px #16a085;
+  border-radius: 0 6px 6px 0;
 }
 </style>

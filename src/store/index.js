@@ -71,6 +71,21 @@ export default new Vuex.Store({
       });
       localStorage.setItem("todos", JSON.stringify(state.todos));
     },
+    // 交换位置
+    swapTodoPosition(state, payload) {
+      console.log(payload);
+      // console.log(state.todos.find((todo) => todo.id === payload[1]));
+      const index1 = state.todos.findIndex((todo) => todo.id === payload[0]);
+      const index2 = state.todos.findIndex((todo) => todo.id === payload[1]);
+      console.log(index1, index2);
+      state.todos[index1] = state.todos.splice(
+        index2,
+        1,
+        state.todos[index1]
+      )[0];
+      // console.log(todo);
+      // state.todos[index1] = todo;
+    },
   },
   actions: {},
   modules: {},
