@@ -55,7 +55,6 @@
     <el-dialog
       title="修改待办事项"
       :visible.sync="dialogFormVisible"
-      width="600px"
       :close-on-click-modal="false"
     >
       <el-form @submit.native.prevent>

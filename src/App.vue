@@ -55,6 +55,9 @@ body {
   body {
     --main-width: auto;
   }
+  .el-dialog {
+    width: 90%;
+  }
 }
 main {
   width: var(--main-width);
