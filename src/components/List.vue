@@ -203,6 +203,7 @@ section.completed {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 4px;
 }
 
 .content {
